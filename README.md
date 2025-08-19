@@ -2,6 +2,8 @@
 
 **Build 1.1 16/08/2025**
 
+For non-eyetracking version, see [main branch](https://github.com/mjcolwell/pavlovian_aversive_learning_task).
+
 Created by Michael Colwell (michael.colwell@psych.ox.ac.uk / michaelcolwell92@gmail.com ORCID 0000-0001-7846-2879), 2025
 
 ![Task Schematic](Task_Schematic/Task_Animation.gif)
