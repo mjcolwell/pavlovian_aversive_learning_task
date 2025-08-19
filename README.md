@@ -15,7 +15,7 @@ The task materials and preprocessing script are offered free of charge for resea
 
 (*Paper forthcoming*)
 
-(*Repo forthcoming*)
+Colwell, M. (2025). Pavlovian Aversive Learning Task (1.1). *Zenodo*. https://doi.org/10.5281/zenodo.16904157
 
 ## Task Description
 
