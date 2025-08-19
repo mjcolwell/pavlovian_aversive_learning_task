@@ -1,4 +1,4 @@
-# Pavlovian Aversive Learning (PAL) task
+# Pavlovian Aversive Learning (PAL) task - Eyetracking Ver.
 
 **Build 1.1 16/08/2025**
 

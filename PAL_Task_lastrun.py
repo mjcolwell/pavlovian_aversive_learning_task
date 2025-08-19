@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2024.2.4),
-    on August 18, 2025, at 18:07
+    on August 18, 2025, at 13:10
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -31,6 +31,28 @@ import os  # handy system and path functions
 import sys  # to get file system encoding
 
 from psychopy.hardware import keyboard
+
+# Run 'Before Experiment' code from Initalise_Eyetrack_code
+import pylink
+import os
+from psychopy import gui, core
+from EyeLinkCoreGraphicsPsychoPy import EyeLinkCoreGraphicsPsychoPy
+
+# === Prompt for filename ===
+while True:
+    dlg = gui.Dlg("Enter EDF filename")
+    dlg.addField("Filename (≤8 chars)", "TEST")
+    ok_data = dlg.show()
+    if not dlg.OK:
+        core.quit()
+    edf_fname = ok_data[0].split(".")[0]
+    if len(edf_fname) <= 8 and edf_fname.isalnum():
+        break
+
+edf_file = edf_fname + ".EDF"
+results_dir = "eyetracker_data"
+if not os.path.exists(results_dir):
+    os.makedirs(results_dir)
 
 # Run 'Before Experiment' code from Stimulation_Calib_Code
 import os
@@ -256,6 +278,7 @@ expInfo = {
     'Visit': 'Pre / Post',
     'Task Version (required)': '1–3',
     'fMRI_enabled': 'No',
+    'EyeL_enabled': 'Yes',
     'Stim_Cal_enabled': 'Yes',
     'Electrode_Loc': 'LN or UN or Cross',
     'date|hid': data.getDateStr(),
@@ -339,7 +362,7 @@ def setupData(expInfo, dataDir=None):
     thisExp = data.ExperimentHandler(
         name=expName, version='',
         extraInfo=expInfo, runtimeInfo=None,
-        originPath='C:\\Users\\PERLadmin\\Desktop\\No_EyeTr\\PAL\\PAL_Task_lastrun.py',
+        originPath='C:\\Users\\PERLadmin\\Desktop\\DOREA_Task_Battery\\PAL\\PAL_Task_lastrun.py',
         savePickle=True, saveWideText=True,
         dataFileName=dataDir + os.sep + filename, sortColumns='time'
     )
@@ -515,6 +538,12 @@ def setupDevices(expInfo, thisExp, win):
         slider_keys3 = deviceManager.addDevice(
             deviceClass='keyboard',
             deviceName='slider_keys3',
+        )
+    if deviceManager.getDevice('EyeT_Recal_Prompt') is None:
+        # initialise EyeT_Recal_Prompt
+        EyeT_Recal_Prompt = deviceManager.addDevice(
+            deviceClass='keyboard',
+            deviceName='EyeT_Recal_Prompt',
         )
     if deviceManager.getDevice('Instr_Key5') is None:
         # initialise Instr_Key5
@@ -1143,6 +1172,34 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         font='Open Sans', labelHeight=0.02,
         flip=False, ori=0.0, depth=-1, readOnly=False)
     
+    # --- Initialize components for Routine "EyeL_calib_instr" ---
+    # Run 'Begin Experiment' code from EyeCal_Instr
+    from psychopy import visual, core, event
+    
+    # One text stim per color segment
+    text_eyecal_instr1 = visual.TextStim(
+        win,
+        text="On the next screen, we will calibrate the eyetracker.",
+        color='black',
+        pos=(-0.5, 0.10),  # adjust as needed
+        height=0.0275,
+        anchorHoriz='left'
+    )
+    
+    
+    
+    text_eyecal_instr3 = visual.TextStim(
+        win,
+        text=f"Press ← or → to continue.",
+        color='black',
+        pos=(-0.5, -0.25),  # shift right to align after green text
+        height=0.03,
+        anchorHoriz='left'
+    )
+    EyeT_Recal_Prompt = keyboard.Keyboard(deviceName='EyeT_Recal_Prompt')
+    
+    # --- Initialize components for Routine "EyeL_Calib" ---
+    
     # --- Initialize components for Routine "Instructions_Final" ---
     # Run 'Begin Experiment' code from Text_code_4
     from psychopy import visual, core, event
@@ -1195,6 +1252,8 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # Run 'Begin Experiment' code from Routine_Skip
     fMRI_enabled = expInfo.get('fMRI_enabled', 'no')
     
+    
+    # --- Initialize components for Routine "Begin_Recording" ---
     
     # --- Initialize components for Routine "Pre_Block_ISI" ---
     ISI_Pre = visual.TextStim(win=win, name='ISI_Pre',
@@ -1298,6 +1357,8 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         color='white', colorSpace='rgb', opacity=None, 
         languageStyle='LTR',
         depth=0.0);
+    
+    # --- Initialize components for Routine "End_Recording" ---
     
     # --- Initialize components for Routine "Break" ---
     Break_Period = visual.TextStim(win=win, name='Break_Period',
@@ -1467,6 +1528,34 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         font='Open Sans', labelHeight=0.02,
         flip=False, ori=0.0, depth=-1, readOnly=False)
     
+    # --- Initialize components for Routine "EyeL_calib_instr" ---
+    # Run 'Begin Experiment' code from EyeCal_Instr
+    from psychopy import visual, core, event
+    
+    # One text stim per color segment
+    text_eyecal_instr1 = visual.TextStim(
+        win,
+        text="On the next screen, we will calibrate the eyetracker.",
+        color='black',
+        pos=(-0.5, 0.10),  # adjust as needed
+        height=0.0275,
+        anchorHoriz='left'
+    )
+    
+    
+    
+    text_eyecal_instr3 = visual.TextStim(
+        win,
+        text=f"Press ← or → to continue.",
+        color='black',
+        pos=(-0.5, -0.25),  # shift right to align after green text
+        height=0.03,
+        anchorHoriz='left'
+    )
+    EyeT_Recal_Prompt = keyboard.Keyboard(deviceName='EyeT_Recal_Prompt')
+    
+    # --- Initialize components for Routine "EyeTracker_Cali" ---
+    
     # --- Initialize components for Routine "Instructions_Final_2" ---
     # Run 'Begin Experiment' code from Text_code_5
     from psychopy import visual, core, event
@@ -1502,6 +1591,8 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     
     
     Instr_Key5_2 = keyboard.Keyboard(deviceName='Instr_Key5_2')
+    
+    # --- Initialize components for Routine "Begin_Recording_2" ---
     
     # --- Initialize components for Routine "Pre_Block_ISI" ---
     ISI_Pre = visual.TextStim(win=win, name='ISI_Pre',
@@ -1653,6 +1744,23 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     Initialisation.status = NOT_STARTED
     continueRoutine = True
     # update component parameters for each repeat
+    # Run 'Begin Routine' code from Initalise_Eyetrack_code
+    # === Connect to EyeLink ===
+    try:
+        el_tracker = pylink.EyeLink("100.1.1.1")
+    except:
+        el_tracker = pylink.EyeLink(None)  # Dummy Mode fallback
+    
+    el_tracker.setOfflineMode()
+    el_tracker.openDataFile(edf_file)
+    
+    # === Screen and calibration setup ===
+    scn_w, scn_h = win.size
+    el_tracker.sendCommand(f"screen_pixel_coords = 0 0 {scn_w - 1} {scn_h - 1}")
+    el_tracker.sendMessage(f"DISPLAY_COORDS 0 0 {scn_w - 1} {scn_h - 1}")
+    genv = EyeLinkCoreGraphicsPsychoPy(el_tracker, win)
+    pylink.openGraphicsEx(genv)
+    
     # store start times for Initialisation
     Initialisation.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
     Initialisation.tStart = globalClock.getTime(format='float')
@@ -4143,6 +4251,209 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # completed 99.0 repeats of 'SecondLoopPass'
     
     
+    # --- Prepare to start Routine "EyeL_calib_instr" ---
+    # create an object to store info about Routine EyeL_calib_instr
+    EyeL_calib_instr = data.Routine(
+        name='EyeL_calib_instr',
+        components=[EyeT_Recal_Prompt],
+    )
+    EyeL_calib_instr.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # create starting attributes for EyeT_Recal_Prompt
+    EyeT_Recal_Prompt.keys = []
+    EyeT_Recal_Prompt.rt = []
+    _EyeT_Recal_Prompt_allKeys = []
+    # store start times for EyeL_calib_instr
+    EyeL_calib_instr.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    EyeL_calib_instr.tStart = globalClock.getTime(format='float')
+    EyeL_calib_instr.status = STARTED
+    thisExp.addData('EyeL_calib_instr.started', EyeL_calib_instr.tStart)
+    EyeL_calib_instr.maxDuration = None
+    # keep track of which components have finished
+    EyeL_calib_instrComponents = EyeL_calib_instr.components
+    for thisComponent in EyeL_calib_instr.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "EyeL_calib_instr" ---
+    EyeL_calib_instr.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        # Run 'Each Frame' code from Box15
+        grayBox.draw()
+        # Run 'Each Frame' code from EyeCal_Instr
+        text_eyecal_instr1.draw()
+        text_eyecal_instr3.draw()
+        
+        # *EyeT_Recal_Prompt* updates
+        waitOnFlip = False
+        
+        # if EyeT_Recal_Prompt is starting this frame...
+        if EyeT_Recal_Prompt.status == NOT_STARTED and tThisFlip >= 0.1-frameTolerance:
+            # keep track of start time/frame for later
+            EyeT_Recal_Prompt.frameNStart = frameN  # exact frame index
+            EyeT_Recal_Prompt.tStart = t  # local t and not account for scr refresh
+            EyeT_Recal_Prompt.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(EyeT_Recal_Prompt, 'tStartRefresh')  # time at next scr refresh
+            # add timestamp to datafile
+            thisExp.timestampOnFlip(win, 'EyeT_Recal_Prompt.started')
+            # update status
+            EyeT_Recal_Prompt.status = STARTED
+            # keyboard checking is just starting
+            waitOnFlip = True
+            win.callOnFlip(EyeT_Recal_Prompt.clock.reset)  # t=0 on next screen flip
+            win.callOnFlip(EyeT_Recal_Prompt.clearEvents, eventType='keyboard')  # clear events on next screen flip
+        if EyeT_Recal_Prompt.status == STARTED and not waitOnFlip:
+            theseKeys = EyeT_Recal_Prompt.getKeys(keyList=['left','right','1', '2'], ignoreKeys=["escape"], waitRelease=False)
+            _EyeT_Recal_Prompt_allKeys.extend(theseKeys)
+            if len(_EyeT_Recal_Prompt_allKeys):
+                EyeT_Recal_Prompt.keys = _EyeT_Recal_Prompt_allKeys[-1].name  # just the last key pressed
+                EyeT_Recal_Prompt.rt = _EyeT_Recal_Prompt_allKeys[-1].rt
+                EyeT_Recal_Prompt.duration = _EyeT_Recal_Prompt_allKeys[-1].duration
+                # a response ends the routine
+                continueRoutine = False
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            EyeL_calib_instr.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in EyeL_calib_instr.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "EyeL_calib_instr" ---
+    for thisComponent in EyeL_calib_instr.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for EyeL_calib_instr
+    EyeL_calib_instr.tStop = globalClock.getTime(format='float')
+    EyeL_calib_instr.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('EyeL_calib_instr.stopped', EyeL_calib_instr.tStop)
+    thisExp.nextEntry()
+    # the Routine "EyeL_calib_instr" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
+    # --- Prepare to start Routine "EyeL_Calib" ---
+    # create an object to store info about Routine EyeL_Calib
+    EyeL_Calib = data.Routine(
+        name='EyeL_Calib',
+        components=[],
+    )
+    EyeL_Calib.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # Run 'Begin Routine' code from Eye_Calib_1
+    el_tracker.doTrackerSetup()
+    # store start times for EyeL_Calib
+    EyeL_Calib.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    EyeL_Calib.tStart = globalClock.getTime(format='float')
+    EyeL_Calib.status = STARTED
+    thisExp.addData('EyeL_Calib.started', EyeL_Calib.tStart)
+    EyeL_Calib.maxDuration = None
+    # keep track of which components have finished
+    EyeL_CalibComponents = EyeL_Calib.components
+    for thisComponent in EyeL_Calib.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "EyeL_Calib" ---
+    EyeL_Calib.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            EyeL_Calib.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in EyeL_Calib.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "EyeL_Calib" ---
+    for thisComponent in EyeL_Calib.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for EyeL_Calib
+    EyeL_Calib.tStop = globalClock.getTime(format='float')
+    EyeL_Calib.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('EyeL_Calib.stopped', EyeL_Calib.tStop)
+    thisExp.nextEntry()
+    # the Routine "EyeL_Calib" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # --- Prepare to start Routine "Instructions_Final" ---
     # create an object to store info about Routine Instructions_Final
     Instructions_Final = data.Routine(
@@ -4442,6 +4753,93 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # completed 5.0 repeats of 'Prompt_Looper'
     
     
+    # --- Prepare to start Routine "Begin_Recording" ---
+    # create an object to store info about Routine Begin_Recording
+    Begin_Recording = data.Routine(
+        name='Begin_Recording',
+        components=[],
+    )
+    Begin_Recording.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # Run 'Begin Routine' code from Begin_Recording_Eyetracker_1
+    el_tracker.sendMessage("RECORDING_START_HALF_1")
+    el_tracker.startRecording(1, 1, 1, 1)
+    pylink.pumpDelay(100)
+    
+    # store start times for Begin_Recording
+    Begin_Recording.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    Begin_Recording.tStart = globalClock.getTime(format='float')
+    Begin_Recording.status = STARTED
+    thisExp.addData('Begin_Recording.started', Begin_Recording.tStart)
+    Begin_Recording.maxDuration = None
+    # keep track of which components have finished
+    Begin_RecordingComponents = Begin_Recording.components
+    for thisComponent in Begin_Recording.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "Begin_Recording" ---
+    Begin_Recording.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            Begin_Recording.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in Begin_Recording.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "Begin_Recording" ---
+    for thisComponent in Begin_Recording.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for Begin_Recording
+    Begin_Recording.tStop = globalClock.getTime(format='float')
+    Begin_Recording.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('Begin_Recording.stopped', Begin_Recording.tStop)
+    thisExp.nextEntry()
+    # the Routine "Begin_Recording" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # --- Prepare to start Routine "Pre_Block_ISI" ---
     # create an object to store info about Routine Pre_Block_ISI
     Pre_Block_ISI = data.Routine(
@@ -4453,6 +4851,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # update component parameters for each repeat
     # Run 'Begin Routine' code from Pre_Timer
     time_trialBegin = globalClock.getTime()
+    el_tracker.sendMessage("PRE_ISI")
     
     # store start times for Pre_Block_ISI
     Pre_Block_ISI.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
@@ -4615,6 +5014,24 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # update component parameters for each repeat
         # Run 'Begin Routine' code from Timer_PostISI
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_CHOICE_ISI TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI ODDBALL %s' % Oddball)
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_NOSHOCK")
         # store start times for Blank
         Blank.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Blank.tStart = globalClock.getTime(format='float')
@@ -4749,6 +5166,16 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         _Estimation_Select_allKeys = []
         # Run 'Begin Routine' code from Timer_2
         time_trialBegin = globalClock.getTime()
+        
+        
+        el_tracker.sendMessage(f"TRIAL_BEGIN")
+        el_tracker.sendMessage(f"TRIAL_TIME_BEGIN {time_trialBegin:.3f}")
+        
+        el_tracker.sendMessage('!V STIMULUS_CHOICE TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE ODDBALL %s' % Oddball)
         
         
         # store start times for Main_Routine_Stimulus_Selection_H1
@@ -4926,6 +5353,13 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         Cued_image_post.setImage(Fractal_img)
         # Run 'Begin Routine' code from Timer_3
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V STIMULUS_SELECTION TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION ODDBALL %s' % Oddball)
+        
         # store start times for Main_Routine_Stimulus_Post_Selection_H1
         Main_Routine_Stimulus_Post_Selection_H1.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Main_Routine_Stimulus_Post_Selection_H1.tStart = globalClock.getTime(format='float')
@@ -5092,6 +5526,24 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # update component parameters for each repeat
         # Run 'Begin Routine' code from Timer_PostISI
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_CHOICE_ISI TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI ODDBALL %s' % Oddball)
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_NOSHOCK")
         # store start times for Blank
         Blank.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Blank.tStart = globalClock.getTime(format='float')
@@ -5367,6 +5819,25 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
             print("⏭ No trigger this trial (Outcome != 1).")
         # Run 'Begin Routine' code from Timer_5
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V EVENT TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V EVENT CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V EVENT CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V EVENT REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V EVENT ODDBALL %s' % Oddball)
+        
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("EVENT OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("EVENT OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("EVENT OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("EVENT OUTCOME SURPRISE_NOSHOCK")
         # store start times for Main_Task_Post_Outcome_H1
         Main_Task_Post_Outcome_H1.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Main_Task_Post_Outcome_H1.tStart = globalClock.getTime(format='float')
@@ -5501,6 +5972,25 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         Main_Task_H1_ISI.setText('+')
         # Run 'Begin Routine' code from Timer_1
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_EVENT TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_EVENT CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_EVENT CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_EVENT REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_EVENT ODDBALL %s' % Oddball)
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_EVENT OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_EVENT OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_EVENT OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_EVENT OUTCOME SURPRISE_NOSHOCK")
+        
         # store start times for Main_Routine_ISI_H1
         Main_Routine_ISI_H1.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Main_Routine_ISI_H1.tStart = globalClock.getTime(format='float')
@@ -5614,6 +6104,10 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         
         thisExp.addData('Post2_ISI_Begin', time_trialBegin)
         thisExp.addData('Post2_ISI_End', time_trialEnd)
+        
+        el_tracker.sendMessage(f"TRIAL_END")
+        el_tracker.sendMessage(f"TRIAL_TIME_END {time_trialEnd:.3f}")
+        
         # the Routine "Main_Routine_ISI_H1" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
         thisExp.nextEntry()
@@ -5623,6 +6117,105 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     if thisSession is not None:
         # if running in a Session with a Liaison client, send data up to now
         thisSession.sendExperimentData()
+    
+    # --- Prepare to start Routine "End_Recording" ---
+    # create an object to store info about Routine End_Recording
+    End_Recording = data.Routine(
+        name='End_Recording',
+        components=[],
+    )
+    End_Recording.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # store start times for End_Recording
+    End_Recording.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    End_Recording.tStart = globalClock.getTime(format='float')
+    End_Recording.status = STARTED
+    thisExp.addData('End_Recording.started', End_Recording.tStart)
+    End_Recording.maxDuration = None
+    # keep track of which components have finished
+    End_RecordingComponents = End_Recording.components
+    for thisComponent in End_Recording.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "End_Recording" ---
+    End_Recording.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            End_Recording.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in End_Recording.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "End_Recording" ---
+    for thisComponent in End_Recording.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for End_Recording
+    End_Recording.tStop = globalClock.getTime(format='float')
+    End_Recording.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('End_Recording.stopped', End_Recording.tStop)
+    # Run 'End Routine' code from Stop_Recording
+    # This End Routine tab of the elStopRecord component stops eye tracker recording
+    
+    core.wait(0.5)
+    
+    # stop recording; add 100 msec to catch final events before stopping
+    el_tracker.sendMessage("RECORDING_END_HALF_1")
+    pylink.pumpDelay(100)
+    el_tracker.stopRecording()
+    
+    core.wait(0.5)
+    
+    # Optional clean-up on the Host display
+    el_tracker.sendCommand('clear_screen 0')             # Clear host display
+    el_tracker.sendMessage('!V CLEAR 128 128 128')       # Clear overlay in Data Viewer
+    
+    continueRoutine = False
+    thisExp.nextEntry()
+    # the Routine "End_Recording" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
     
     # --- Prepare to start Routine "Break" ---
     # create an object to store info about Routine Break
@@ -7703,6 +8296,209 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # completed 99.0 repeats of 'SecondLoopPass2'
     
     
+    # --- Prepare to start Routine "EyeL_calib_instr" ---
+    # create an object to store info about Routine EyeL_calib_instr
+    EyeL_calib_instr = data.Routine(
+        name='EyeL_calib_instr',
+        components=[EyeT_Recal_Prompt],
+    )
+    EyeL_calib_instr.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # create starting attributes for EyeT_Recal_Prompt
+    EyeT_Recal_Prompt.keys = []
+    EyeT_Recal_Prompt.rt = []
+    _EyeT_Recal_Prompt_allKeys = []
+    # store start times for EyeL_calib_instr
+    EyeL_calib_instr.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    EyeL_calib_instr.tStart = globalClock.getTime(format='float')
+    EyeL_calib_instr.status = STARTED
+    thisExp.addData('EyeL_calib_instr.started', EyeL_calib_instr.tStart)
+    EyeL_calib_instr.maxDuration = None
+    # keep track of which components have finished
+    EyeL_calib_instrComponents = EyeL_calib_instr.components
+    for thisComponent in EyeL_calib_instr.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "EyeL_calib_instr" ---
+    EyeL_calib_instr.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        # Run 'Each Frame' code from Box15
+        grayBox.draw()
+        # Run 'Each Frame' code from EyeCal_Instr
+        text_eyecal_instr1.draw()
+        text_eyecal_instr3.draw()
+        
+        # *EyeT_Recal_Prompt* updates
+        waitOnFlip = False
+        
+        # if EyeT_Recal_Prompt is starting this frame...
+        if EyeT_Recal_Prompt.status == NOT_STARTED and tThisFlip >= 0.1-frameTolerance:
+            # keep track of start time/frame for later
+            EyeT_Recal_Prompt.frameNStart = frameN  # exact frame index
+            EyeT_Recal_Prompt.tStart = t  # local t and not account for scr refresh
+            EyeT_Recal_Prompt.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(EyeT_Recal_Prompt, 'tStartRefresh')  # time at next scr refresh
+            # add timestamp to datafile
+            thisExp.timestampOnFlip(win, 'EyeT_Recal_Prompt.started')
+            # update status
+            EyeT_Recal_Prompt.status = STARTED
+            # keyboard checking is just starting
+            waitOnFlip = True
+            win.callOnFlip(EyeT_Recal_Prompt.clock.reset)  # t=0 on next screen flip
+            win.callOnFlip(EyeT_Recal_Prompt.clearEvents, eventType='keyboard')  # clear events on next screen flip
+        if EyeT_Recal_Prompt.status == STARTED and not waitOnFlip:
+            theseKeys = EyeT_Recal_Prompt.getKeys(keyList=['left','right','1', '2'], ignoreKeys=["escape"], waitRelease=False)
+            _EyeT_Recal_Prompt_allKeys.extend(theseKeys)
+            if len(_EyeT_Recal_Prompt_allKeys):
+                EyeT_Recal_Prompt.keys = _EyeT_Recal_Prompt_allKeys[-1].name  # just the last key pressed
+                EyeT_Recal_Prompt.rt = _EyeT_Recal_Prompt_allKeys[-1].rt
+                EyeT_Recal_Prompt.duration = _EyeT_Recal_Prompt_allKeys[-1].duration
+                # a response ends the routine
+                continueRoutine = False
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            EyeL_calib_instr.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in EyeL_calib_instr.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "EyeL_calib_instr" ---
+    for thisComponent in EyeL_calib_instr.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for EyeL_calib_instr
+    EyeL_calib_instr.tStop = globalClock.getTime(format='float')
+    EyeL_calib_instr.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('EyeL_calib_instr.stopped', EyeL_calib_instr.tStop)
+    thisExp.nextEntry()
+    # the Routine "EyeL_calib_instr" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
+    # --- Prepare to start Routine "EyeTracker_Cali" ---
+    # create an object to store info about Routine EyeTracker_Cali
+    EyeTracker_Cali = data.Routine(
+        name='EyeTracker_Cali',
+        components=[],
+    )
+    EyeTracker_Cali.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # store start times for EyeTracker_Cali
+    EyeTracker_Cali.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    EyeTracker_Cali.tStart = globalClock.getTime(format='float')
+    EyeTracker_Cali.status = STARTED
+    thisExp.addData('EyeTracker_Cali.started', EyeTracker_Cali.tStart)
+    EyeTracker_Cali.maxDuration = None
+    # keep track of which components have finished
+    EyeTracker_CaliComponents = EyeTracker_Cali.components
+    for thisComponent in EyeTracker_Cali.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "EyeTracker_Cali" ---
+    EyeTracker_Cali.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            EyeTracker_Cali.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in EyeTracker_Cali.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "EyeTracker_Cali" ---
+    for thisComponent in EyeTracker_Cali.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for EyeTracker_Cali
+    EyeTracker_Cali.tStop = globalClock.getTime(format='float')
+    EyeTracker_Cali.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('EyeTracker_Cali.stopped', EyeTracker_Cali.tStop)
+    # Run 'End Routine' code from EyeLink_Cali
+    el_tracker.doTrackerSetup()
+    thisExp.nextEntry()
+    # the Routine "EyeTracker_Cali" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # --- Prepare to start Routine "Instructions_Final_2" ---
     # create an object to store info about Routine Instructions_Final_2
     Instructions_Final_2 = data.Routine(
@@ -7827,6 +8623,93 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # the Routine "Instructions_Final_2" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
+    # --- Prepare to start Routine "Begin_Recording_2" ---
+    # create an object to store info about Routine Begin_Recording_2
+    Begin_Recording_2 = data.Routine(
+        name='Begin_Recording_2',
+        components=[],
+    )
+    Begin_Recording_2.status = NOT_STARTED
+    continueRoutine = True
+    # update component parameters for each repeat
+    # Run 'Begin Routine' code from Begin_Recording_Eyetracker
+    el_tracker.sendMessage("RECORDING_START_HALF_2")
+    el_tracker.startRecording(1, 1, 1, 1)
+    pylink.pumpDelay(100)
+    
+    # store start times for Begin_Recording_2
+    Begin_Recording_2.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
+    Begin_Recording_2.tStart = globalClock.getTime(format='float')
+    Begin_Recording_2.status = STARTED
+    thisExp.addData('Begin_Recording_2.started', Begin_Recording_2.tStart)
+    Begin_Recording_2.maxDuration = None
+    # keep track of which components have finished
+    Begin_Recording_2Components = Begin_Recording_2.components
+    for thisComponent in Begin_Recording_2.components:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    frameN = -1
+    
+    # --- Run Routine "Begin_Recording_2" ---
+    Begin_Recording_2.forceEnded = routineForceEnded = not continueRoutine
+    while continueRoutine:
+        # get current time
+        t = routineTimer.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=routineTimer)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if defaultKeyboard.getKeys(keyList=["escape"]):
+            thisExp.status = FINISHED
+        if thisExp.status == FINISHED or endExpNow:
+            endExperiment(thisExp, win=win)
+            return
+        # pause experiment here if requested
+        if thisExp.status == PAUSED:
+            pauseExperiment(
+                thisExp=thisExp, 
+                win=win, 
+                timers=[routineTimer], 
+                playbackComponents=[]
+            )
+            # skip the frame we paused on
+            continue
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            Begin_Recording_2.forceEnded = routineForceEnded = True
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in Begin_Recording_2.components:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # --- Ending Routine "Begin_Recording_2" ---
+    for thisComponent in Begin_Recording_2.components:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # store stop times for Begin_Recording_2
+    Begin_Recording_2.tStop = globalClock.getTime(format='float')
+    Begin_Recording_2.tStopRefresh = tThisFlipGlobal
+    thisExp.addData('Begin_Recording_2.stopped', Begin_Recording_2.tStop)
+    thisExp.nextEntry()
+    # the Routine "Begin_Recording_2" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # --- Prepare to start Routine "Pre_Block_ISI" ---
     # create an object to store info about Routine Pre_Block_ISI
     Pre_Block_ISI = data.Routine(
@@ -7838,6 +8721,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # update component parameters for each repeat
     # Run 'Begin Routine' code from Pre_Timer
     time_trialBegin = globalClock.getTime()
+    el_tracker.sendMessage("PRE_ISI")
     
     # store start times for Pre_Block_ISI
     Pre_Block_ISI.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
@@ -8000,6 +8884,24 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # update component parameters for each repeat
         # Run 'Begin Routine' code from Timer_PostISI
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_CHOICE_ISI TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI ODDBALL %s' % Oddball)
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_NOSHOCK")
         # store start times for Blank
         Blank.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Blank.tStart = globalClock.getTime(format='float')
@@ -8134,6 +9036,15 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         _Estimation_Select_2_allKeys = []
         # Run 'Begin Routine' code from Timer_8
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage(f"TRIAL_BEGIN")
+        el_tracker.sendMessage(f"TRIAL_TIME_BEGIN {time_trialBegin:.3f}")
+        
+        el_tracker.sendMessage('!V STIMULUS_CHOICE TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V STIMULUS_CHOICE ODDBALL %s' % Oddball)
         
         # store start times for Main_Routine_Stimulus_Selection_H2
         Main_Routine_Stimulus_Selection_H2.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
@@ -8310,6 +9221,13 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         Cued_image_post_2.setImage(Fractal_img)
         # Run 'Begin Routine' code from Timer_9
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V STIMULUS_SELECTION TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V STIMULUS_SELECTION ODDBALL %s' % Oddball)
+        
         # store start times for Main_Routine_Stimulus_Post_Selection_H2
         Main_Routine_Stimulus_Post_Selection_H2.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Main_Routine_Stimulus_Post_Selection_H2.tStart = globalClock.getTime(format='float')
@@ -8476,6 +9394,24 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # update component parameters for each repeat
         # Run 'Begin Routine' code from Timer_PostISI
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_CHOICE_ISI TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_CHOICE_ISI ODDBALL %s' % Oddball)
+        
+        if Estimation_Select.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_CHOICE_ISI OUTCOME SURPRISE_NOSHOCK")
         # store start times for Blank
         Blank.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Blank.tStart = globalClock.getTime(format='float')
@@ -8713,6 +9649,8 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         thisExp.addData('Main_Task_PostISI_H2.stopped', Main_Task_PostISI_H2.tStop)
         # Run 'End Routine' code from Timer_10
         time_trialEnd = globalClock.getTime()
+        
+        thisExp.addData('PostISI_End_Time', time_trialEnd)
         # the Routine "Main_Task_PostISI_H2" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
         
@@ -8727,6 +9665,24 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # update component parameters for each repeat
         # Run 'Begin Routine' code from Timer_11
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V EVENT TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V EVENT CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V EVENT CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V EVENT REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V EVENT ODDBALL %s' % Oddball)
+        
+        if Estimation_Select_2.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("EVENT OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select_2.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("EVENT OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select_2.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("EVENT OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select_2.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("EVENT OUTCOME SURPRISE_NOSHOCK")
         # Run 'Begin Routine' code from Shock_Code_2
         ctl.demand = last_demand
         ctl.pulse_width = last_pulse_width
@@ -8883,6 +9839,25 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         Main_Task_H1_ISI_2.setText('+')
         # Run 'Begin Routine' code from Timer_13
         time_trialBegin = globalClock.getTime()
+        
+        el_tracker.sendMessage('!V POST_EVENT TRIAL_NO %s' % Trial_No)
+        el_tracker.sendMessage('!V POST_EVENT CUE_TYPE %s' % Cue_Type)
+        el_tracker.sendMessage('!V POST_EVENT CUE_PROB %s' % Cue_Prob)
+        el_tracker.sendMessage('!V POST_EVENT REVERSAL_EVENT %s' % Reversal_event)
+        el_tracker.sendMessage('!V POST_EVENT ODDBALL %s' % Oddball)
+        
+        if Estimation_Select_2.keys == 'left' and Outcome == 1:
+            el_tracker.sendMessage("POST_EVENT OUTCOME SURPRISE_SHOCK")
+            
+        if Estimation_Select_2.keys == 'left' and Outcome == 0:
+            el_tracker.sendMessage("POST_EVENT OUTCOME NOSURPRISE_NOSHOCK")
+            
+        if Estimation_Select_2.keys == 'right' and Outcome == 1:
+            el_tracker.sendMessage("POST_EVENT OUTCOME NOSURPRISE_SHOCK")
+            
+        if Estimation_Select_2.keys == 'right' and Outcome == 0:
+            el_tracker.sendMessage("POST_EVENT OUTCOME SURPRISE_NOSHOCK")
+        
         # store start times for Main_Routine_ISI_H2_2
         Main_Routine_ISI_H2_2.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
         Main_Routine_ISI_H2_2.tStart = globalClock.getTime(format='float')
@@ -8996,6 +9971,10 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         
         thisExp.addData('Post2_ISI_Begin', time_trialBegin)
         thisExp.addData('Post2_ISI_End', time_trialEnd)
+        
+        el_tracker.sendMessage(f"TRIAL_END")
+        el_tracker.sendMessage(f"TRIAL_TIME_END {time_trialEnd:.3f}")
+        
         # the Routine "Main_Routine_ISI_H2_2" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
         thisExp.nextEntry()
@@ -9084,6 +10063,23 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     End_Recording_2.tStop = globalClock.getTime(format='float')
     End_Recording_2.tStopRefresh = tThisFlipGlobal
     thisExp.addData('End_Recording_2.stopped', End_Recording_2.tStop)
+    # Run 'End Routine' code from End_Recording_3
+    # This End Routine tab of the elStopRecord component stops eye tracker recording
+    
+    core.wait(0.5)
+    
+    # stop recording; add 100 msec to catch final events before stopping
+    el_tracker.sendMessage("RECORDING_END_HALF_2")
+    pylink.pumpDelay(100)
+    el_tracker.stopRecording()
+    
+    core.wait(0.5)
+    
+    # Optional clean-up on the Host display
+    el_tracker.sendCommand('clear_screen 0')             # Clear host display
+    el_tracker.sendMessage('!V CLEAR 128 128 128')       # Clear overlay in Data Viewer
+    
+    continueRoutine = False
     thisExp.nextEntry()
     # the Routine "End_Recording_2" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
@@ -9097,6 +10093,30 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     Task_End.status = NOT_STARTED
     continueRoutine = True
     # update component parameters for each repeat
+    # Run 'Begin Routine' code from Send_Eyetracker_EDF
+    # Assume `el_tracker` and `edf_fname` are already defined
+    if el_tracker.isConnected():
+        el_tracker.setOfflineMode()
+        pylink.msecDelay(500)
+    
+        try:
+            el_tracker.closeDataFile()
+        except RuntimeError as err:
+            print("Error closing EDF on Host:", err)
+    
+        print("Transferring EDF file from Host...")
+    
+        # Define where to save locally
+        local_path = f"eyetracker_data/{edf_fname}.EDF"  # or any path you want
+    
+        try:
+            el_tracker.receiveDataFile(edf_fname + ".EDF", local_path)
+            print(f"EDF successfully saved to {local_path}")
+        except RuntimeError as err:
+            print("Error downloading EDF:", err)
+    
+        el_tracker.close()
+    
     # store start times for Task_End
     Task_End.tStartRefresh = win.getFutureFlipTime(clock=globalClock)
     Task_End.tStart = globalClock.getTime(format='float')
@@ -9195,6 +10215,13 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     thisExp.nextEntry()
     # the Routine "Task_End" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
+    # Run 'End Experiment' code from EyeLink_Cali
+    # This End Experiment tab of the elConnect component calls the 
+    # terminate_task helper function to get the EDF file and close the connection
+    # to the Host PC
+    
+    # Disconnect, download the EDF file, then terminate the task
+    terminate_task(genv,edf_file,session_folder,session_identifier)
     
     # mark experiment as finished
     endExperiment(thisExp, win=win)
